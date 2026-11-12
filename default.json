@@ -1,0 +1,56 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Kinde org-wide Renovate preset: auto-merge stable non-major updates once CI and the AI dependency-risk check pass; majors need approval in the Dependency Dashboard.",
+  "extends": [
+    "config:recommended",
+    ":automergeStableNonMajor",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    "helpers:pinGitHubActionDigests",
+    "schedule:weekly"
+  ],
+  "timezone": "Europe/London",
+  "platformAutomerge": true,
+  "automergeType": "pr",
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 0,
+  "labels": ["dependencies"],
+  "rangeStrategy": "auto",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": null,
+    "labels": ["security"]
+  },
+  "packageRules": [
+    {
+      "description": "Group stable non-major npm/pnpm and GitHub Actions updates into one weekly PR and auto-merge it once all required checks pass",
+      "matchManagers": ["npm", "github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchCurrentVersion": "!/^v?0\\./",
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "automerge": true
+    },
+    {
+      "description": "0.x packages can break on a minor bump: separate PRs, a human merges them",
+      "matchManagers": ["npm"],
+      "matchCurrentVersion": "/^v?0\\./",
+      "automerge": false,
+      "labels": ["dependencies", "zero-ver"]
+    },
+    {
+      "description": "Major updates wait for a tick in the Dependency Dashboard and are never auto-merged",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "automerge": false,
+      "labels": ["dependencies", "major-update"]
+    }
+  ]
+}
