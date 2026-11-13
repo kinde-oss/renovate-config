@@ -21,8 +21,9 @@ Repo-specific overrides go after the `extends` line, for example `"automerge": f
 | --- | --- |
 | Stable minor / patch / digest (npm, pnpm, GitHub Actions) | Grouped into one weekly PR. Auto-merged once CI **and** the `dependency-risk` check pass. |
 | Any `0.x` package | Separate PR, never auto-merged (a minor bump can be breaking). |
+| Other managers (Dockerfiles, Go modules, ...) | Normal PRs, never auto-merged. The `dependency-risk` check can only review npm/pnpm and GitHub Actions changes. |
 | Major | Waits for approval in the Dependency Dashboard issue, never auto-merged. |
-| Lockfile maintenance | Monday before 6am, auto-merged. |
+| Lockfile maintenance | Monday before 6am. Auto-merged only for `pnpm-lock.yaml`; `package-lock.json`, `yarn.lock` and other lockfiles need a human. |
 | Security fixes | Raised immediately, bypassing the 3-day release age. |
 
 Every release must be at least **3 days old** before Renovate proposes it. That's the main protection against compromised npm releases, which are usually unpublished within hours.
