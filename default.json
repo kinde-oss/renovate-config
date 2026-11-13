@@ -37,9 +37,10 @@
       "automerge": true
     },
     {
-      "description": "Auto-merge lockfile maintenance only for npm/pnpm, the only lockfile the dependency-risk check can review",
+      "description": "Auto-merge lockfile maintenance only for pnpm-lock.yaml, the only lockfile the dependency-risk check can review (the npm manager also covers package-lock.json and yarn.lock)",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["lockFileMaintenance"],
+      "matchFileNames": ["pnpm-lock.yaml", "**/pnpm-lock.yaml"],
       "automerge": true
     },
     {
